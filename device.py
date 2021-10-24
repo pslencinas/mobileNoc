@@ -4,7 +4,7 @@ import os
 from ciscoconfparse import CiscoConfParse
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Vlan
+from model import Base, Vlan
 import logging
 from netmiko import ConnectHandler
 
