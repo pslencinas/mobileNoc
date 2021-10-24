@@ -1,0 +1,840 @@
+Building configuration...
+
+Current configuration : 25746 bytes
+!
+! Last configuration change at 19:48:54 ARG Sat Oct 23 2021 by ext_plencinas
+! NVRAM config last updated at 19:45:52 ARG Sat Oct 23 2021 by ext_plencinas
+!
+version 16.11
+no service pad
+service tcp-keepalives-in
+service timestamps debug datetime msec localtime
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+service sequence-numbers
+service call-home
+no platform punt-keepalive disable-kernel-core
+!
+hostname VLO-SW-U-4
+!
+!
+vrf definition Mgmt-vrf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 5 $1$iTAz$WtEDRfdBr5f/lTbxngGEP/
+!
+!
+!
+!
+aaa new-model
+!
+!
+aaa group server tacacs+ ISE_GROUP
+ server name VLO-VI-ISE-01
+!
+aaa authentication login default group tacacs+ local
+aaa authentication enable default group tacacs+ enable
+aaa authorization console
+aaa authorization exec default group tacacs+ if-authenticated 
+aaa accounting exec default start-stop group tacacs+ logger
+!
+!
+!
+!
+!
+!
+aaa session-id common
+boot system switch all flash:packages.conf
+clock timezone ARG -3 0
+switch 1 provision c9200l-24p-4g
+!
+!
+!
+!
+vtp domain VISTAOIL
+vtp mode transparent
+!
+!
+!
+!
+!
+ip arp entry learn 10240
+!
+!
+!
+!
+!
+ip name-server 10.21.6.2
+ip domain name vista.dns
+!
+!
+!
+login on-failure log
+login on-success log
+call-home
+ ! If contact email address in call-home is configured as sch-smart-licensing@cisco.com
+ ! the email address configured in Cisco Smart License Portal will be used as contact email address to send SCH notifications.
+ contact-email-addr sch-smart-licensing@cisco.com
+ profile "CiscoTAC-1"
+  active
+  destination transport-method http
+  no destination transport-method email
+!
+!
+no device-tracking logging theft
+!
+crypto pki trustpoint SLA-TrustPoint
+ enrollment pkcs12
+ revocation-check crl
+!
+crypto pki trustpoint TP-self-signed-2043673851
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2043673851
+ revocation-check none
+ rsakeypair TP-self-signed-2043673851
+!
+!
+crypto pki certificate chain SLA-TrustPoint
+ certificate ca 01
+  30820321 30820209 A0030201 02020101 300D0609 2A864886 F70D0101 0B050030 
+  32310E30 0C060355 040A1305 43697363 6F312030 1E060355 04031317 43697363 
+  6F204C69 63656E73 696E6720 526F6F74 20434130 1E170D31 33303533 30313934 
+  3834375A 170D3338 30353330 31393438 34375A30 32310E30 0C060355 040A1305 
+  43697363 6F312030 1E060355 04031317 43697363 6F204C69 63656E73 696E6720 
+  526F6F74 20434130 82012230 0D06092A 864886F7 0D010101 05000382 010F0030 
+  82010A02 82010100 A6BCBD96 131E05F7 145EA72C 2CD686E6 17222EA1 F1EFF64D 
+  CBB4C798 212AA147 C655D8D7 9471380D 8711441E 1AAF071A 9CAE6388 8A38E520 
+  1C394D78 462EF239 C659F715 B98C0A59 5BBB5CBD 0CFEBEA3 700A8BF7 D8F256EE 
+  4AA4E80D DB6FD1C9 60B1FD18 FFC69C96 6FA68957 A2617DE7 104FDC5F EA2956AC 
+  7390A3EB 2B5436AD C847A2C5 DAB553EB 69A9A535 58E9F3E3 C0BD23CF 58BD7188 
+  68E69491 20F320E7 948E71D7 AE3BCC84 F10684C7 4BC8E00F 539BA42B 42C68BB7 
+  C7479096 B4CB2D62 EA2F505D C7B062A4 6811D95B E8250FC4 5D5D5FB8 8F27D191 
+  C55F0D76 61F9A4CD 3D992327 A8BB03BD 4E6D7069 7CBADF8B DF5F4368 95135E44 
+  DFC7C6CF 04DD7FD1 02030100 01A34230 40300E06 03551D0F 0101FF04 04030201 
+  06300F06 03551D13 0101FF04 05300301 01FF301D 0603551D 0E041604 1449DC85 
+  4B3D31E5 1B3E6A17 606AF333 3D3B4C73 E8300D06 092A8648 86F70D01 010B0500 
+  03820101 00507F24 D3932A66 86025D9F E838AE5C 6D4DF6B0 49631C78 240DA905 
+  604EDCDE FF4FED2B 77FC460E CD636FDB DD44681E 3A5673AB 9093D3B1 6C9E3D8B 
+  D98987BF E40CBD9E 1AECA0C2 2189BB5C 8FA85686 CD98B646 5575B146 8DFC66A8 
+  467A3DF4 4D565700 6ADF0F0D CF835015 3C04FF7C 21E878AC 11BA9CD2 55A9232C 
+  7CA7B7E6 C1AF74F6 152E99B7 B1FCF9BB E973DE7F 5BDDEB86 C71E3B49 1765308B 
+  5FB0DA06 B92AFE7F 494E8A9E 07B85737 F3A58BE1 1A48A229 C37C1E69 39F08678 
+  80DDCD16 D6BACECA EEBC7CF9 8428787B 35202CDC 60E4616A B623CDBD 230E3AFB 
+  418616A9 4093E049 4D10AB75 27E86F73 932E35B5 8862FDAE 0275156F 719BB2F0 
+  D697DF7F 28
+  	quit
+crypto pki certificate chain TP-self-signed-2043673851
+ certificate self-signed 01
+  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 32303433 36373338 3531301E 170D3139 30353037 30303230 
+  31335A17 0D333030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D32 30343336 
+  37333835 31308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201 
+  0A028201 0100B2F3 A60A7E88 0EEB41B0 4AC8EAA5 EE17710F 0C64BCB1 C44D26F1 
+  DA24F57D 2840EF0B B95B666A 5DAC1675 15A1C837 35D735D3 06CA0A95 D8FED1B5 
+  323355F4 182346CA 9D50C363 DD97AD8C 798DEB59 EA7BAC18 D7C5C8F3 EE413E37 
+  0EAAA8E0 63801BC1 BC5D413A 8317FDF6 1F6ED44B 1DC8C6DB 38A3ADAB 2A85E7DF 
+  10D5CC2C 81A7BD62 0370A7C4 DFE64D67 4A0A44CE 90312108 96C01473 BAA687E3 
+  1474F02E 34DFC81E 0798D23A 9D074F6E 43C147E1 AF8E0902 4EF08166 778314D8 
+  03005ED8 F259D8A0 235EA463 86DAB963 46CC0F3D 154C501D F15238F0 35C7CB8A 
+  BAF1705B 36E10833 E52487B4 41EAA233 0D41B43F 7FCC6985 46091565 0063A383 
+  CEFB326D 49830203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 
+  301F0603 551D2304 18301680 1485CA69 0CB81834 88C5E73E 74AF086E 15897BCE 
+  5B301D06 03551D0E 04160414 85CA690C B8183488 C5E73E74 AF086E15 897BCE5B 
+  300D0609 2A864886 F70D0101 05050003 82010100 8647D422 F8162370 8A89B516 
+  32B988CD C638469F 88EB108B BD2438E2 5C8E1C42 7504DDB8 78510445 F65556F2 
+  E92FA910 3D8D69BE 472491FC 76E9EEAA 6599533E 759D9F23 2D036742 373C7B7C 
+  B61C9041 3E553FE4 FB4E6B76 6F42B465 16D5AA8F FE32D010 E548F200 2E86406B 
+  C0439C9B 00692401 F10043A1 C20112A1 7CDC136D 32D607EC 8198285D 01BD4D34 
+  7A6CA6B2 1F8B9AB5 DAD40A62 C926A23F FA268E2A 6328504E BA09594A F9425C47 
+  0CB2940F 29EB73AD 43D0E56D 2027E42A 47DB3FC2 458F526D DB7F20BF F24D9052 
+  6476200B A043E9F1 E59BE707 D5966148 573C882C 778E5AED C0BE2EA0 00E80D24 
+  C0464995 7954976B 3FC5F715 81FB2839 4FA19365
+  	quit
+!
+crypto pki certificate pool
+ cabundle nvram:ios_core.p7b
+!
+license boot level network-advantage addon dna-advantage
+!
+!
+diagnostic bootup level minimal
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+memory free low-watermark processor 51796
+!
+!
+username diana privilege 10 secret 9 $9$pQyXq.YEXf7l3k$spCM1iJnNi9BF5lNe4YzlZblRZ5H75FSjmlHwgFry1Q
+username adminvista privilege 15 secret 9 $9$FAt806Dm3ZbqA.$MhzC57ckwgwgDtNCQkR9hzxN/eq9ZT2pUdzfttLbYrQ
+!
+redundancy
+ mode sso
+!
+!
+vlan 9
+ name NATIVE
+!
+vlan 10
+ name LAN
+!
+vlan 11
+ name Wireless
+!
+vlan 12
+ name Telefonia
+!
+vlan 13
+ name Servidores
+!
+vlan 14
+ name Camaras
+!
+vlan 15
+ name Impresoras
+!
+vlan 16
+ name VideoConference
+!
+vlan 20
+ name MANAGEMENT
+!
+vlan 255
+ name Administracion
+!
+vlan 666
+ name DMZ
+!
+!
+class-map match-any system-cpp-police-ewlc-control
+  description EWLC Control 
+class-map match-any system-cpp-police-topology-control
+  description Topology control
+class-map match-any system-cpp-police-sw-forward
+  description Sw forwarding, L2 LVX data packets, LOGGING, Transit Traffic
+class-map match-any system-cpp-default
+  description EWLC data, Inter FED Traffic 
+class-map match-any system-cpp-police-sys-data
+  description Openflow, Exception, EGR Exception, NFL Sampled Data, RPF Failed
+class-map match-any system-cpp-police-punt-webauth
+  description Punt Webauth
+class-map match-any system-cpp-police-l2lvx-control
+  description L2 LVX control packets
+class-map match-any system-cpp-police-forus
+  description Forus Address resolution and Forus traffic
+class-map match-any system-cpp-police-multicast-end-station
+  description MCAST END STATION
+class-map match-any system-cpp-police-high-rate-app
+  description High Rate Applications 
+class-map match-any system-cpp-police-multicast
+  description MCAST Data
+class-map match-any system-cpp-police-l2-control
+  description L2 control
+class-map match-any system-cpp-police-dot1x-auth
+  description DOT1X Auth
+class-map match-any system-cpp-police-data
+  description ICMP redirect, ICMP_GEN and BROADCAST
+class-map match-any system-cpp-police-stackwise-virt-control
+  description Stackwise Virtual OOB
+class-map match-any non-client-nrt-class
+class-map match-any system-cpp-police-routing-control
+  description Routing control and Low Latency
+class-map match-any system-cpp-police-protocol-snooping
+  description Protocol snooping
+class-map match-any system-cpp-police-dhcp-snooping
+  description DHCP snooping
+class-map match-any system-cpp-police-ios-routing
+  description L2 control, Topology control, Routing control, Low Latency
+class-map match-any system-cpp-police-system-critical
+  description System Critical and Gold Pkt
+class-map match-any system-cpp-police-ios-feature
+  description ICMPGEN,BROADCAST,ICMP,L2LVXCntrl,ProtoSnoop,PuntWebauth,MCASTData,Transit,DOT1XAuth,Swfwd,LOGGING,L2LVXData,ForusTraffic,ForusARP,McastEndStn,Openflow,Exception,EGRExcption,NflSampled,RpfFailed
+!
+policy-map system-cpp-policy
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ description uplink CORE
+ switchport access vlan 255
+ switchport trunk native vlan 255
+ switchport mode trunk
+!
+interface GigabitEthernet0/0
+ vrf forwarding Mgmt-vrf
+ no ip address
+ shutdown
+ speed 1000
+ negotiation auto
+!
+interface GigabitEthernet1/0/1
+ description ### ViaGo Sala PRosada R2-P9-12 ###
+ switchport access vlan 11
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/2
+ description ### Videoconf_Prosada - PP R2_P9_11 ###
+ switchport access vlan 16
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/3
+ description Touch10 Sala Corner
+ switchport access vlan 16
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/4
+ description ### ACC VC ## AMX_SALA Vacamuerta - R2_P9_06
+ switchport access vlan 16
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/5
+ description ### ViaGo OF Juan Garoby R2-P8-11 ###
+ switchport access vlan 11
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/6
+ description Link-to-WLC
+ switchport access vlan 10
+ switchport mode access
+ switchport voice vlan 12
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/7
+ description Link-to-WLC
+ switchport access vlan 10
+ switchport mode access
+ switchport voice vlan 12
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/8
+ description Link-to-WLC
+ switchport access vlan 10
+ switchport mode access
+ switchport voice vlan 12
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/9
+ description Link-to-WLC
+ switchport access vlan 10
+ switchport mode access
+ switchport voice vlan 12
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/10
+ description Link-to-WLC
+ switchport access vlan 10
+ switchport mode access
+ switchport voice vlan 12
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/11
+ description Link-to-WLC
+ switchport access vlan 10
+ switchport mode access
+ switchport voice vlan 12
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/12
+ description Link-to-WLC
+ switchport access vlan 10
+ switchport mode access
+ switchport voice vlan 12
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/13
+ description ### AMX_SALA Vaca Muerta - R2/P09-01 ###
+ switchport access vlan 16
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/14
+ description Videoconf_ELCUBO - 10.20.9.24
+ switchport access vlan 16
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/15
+ switchport access vlan 16
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/16
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/17
+ description ViaGo Sala Molles
+ switchport access vlan 11
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/18
+ description ViaGo_Of_Remy - 10.20.3.203 - PP R2_P8_XX
+ switchport access vlan 11
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/19
+ description ViaGo_Anexo_Remy - 10.20.3.213 - PP R2_P8_XX
+ switchport access vlan 11
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/20
+ description Viago_Anexo_PvP -r2/p10-41
+ switchport access vlan 11
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/21
+ description AMX Sala Lotena
+ switchport access vlan 16
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/22
+ description Sala Lotena WRK Mini
+ switchport access vlan 16
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security
+ storm-control broadcast level 5.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/23
+ description VLO-SR-C-01 ten 1/0/12
+ switchport access vlan 255
+ switchport trunk native vlan 255
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface GigabitEthernet1/0/24
+ description VLO-SR-C-01 ten 2/0/12
+ switchport access vlan 255
+ switchport trunk native vlan 255
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface GigabitEthernet1/1/1
+!
+interface GigabitEthernet1/1/2
+!
+interface GigabitEthernet1/1/3
+!
+interface GigabitEthernet1/1/4
+!
+interface Vlan1
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface Vlan10
+ description Gateway-LAN
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface Vlan11
+ description Gateway-Wireless
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface Vlan12
+ description Gateway-Telefonia
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface Vlan13
+ description Gateway-Servidores
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface Vlan14
+ description Gateway-Camaras
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface Vlan15
+ description Gateway-Impresoras
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface Vlan16
+ description Gateway-VideoConference
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface Vlan20
+ description Management
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface Vlan255
+ description Red Administracisn
+ ip address 10.20.255.33 255.255.255.0
+ no ip route-cache
+!
+ip default-gateway 10.20.255.1
+ip forward-protocol nd
+no ip http server
+ip http authentication local
+ip http secure-server
+ip ftp source-interface Vlan255
+ip tftp source-interface Vlan255
+ip tacacs source-interface Vlan255 
+ip ssh time-out 60
+ip ssh authentication-retries 2
+ip ssh version 2
+!
+!
+!
+logging source-interface Vlan255
+ip access-list standard 31
+ permit 10.20.6.247
+ip access-list standard 32
+ permit 10.21.6.56
+ permit 10.70.70.55
+ip access-list standard 33
+ permit 10.70.70.55
+!
+snmp-server community forty40 RO 31
+snmp-server community Snmp#V1ST4! RO 32
+snmp-server trap-source Vlan255
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps flowmon
+snmp-server enable traps entity-perf throughput-notif
+snmp-server enable traps call-home message-send-fail server-fail
+snmp-server enable traps tty
+snmp-server enable traps ospf state-change
+snmp-server enable traps ospf errors
+snmp-server enable traps ospf retransmit
+snmp-server enable traps ospf lsa
+snmp-server enable traps ospf cisco-specific state-change nssa-trans-change
+snmp-server enable traps ospf cisco-specific state-change shamlink interface
+snmp-server enable traps ospf cisco-specific state-change shamlink neighbor
+snmp-server enable traps ospf cisco-specific errors
+snmp-server enable traps ospf cisco-specific retransmit
+snmp-server enable traps ospf cisco-specific lsa
+snmp-server enable traps eigrp
+snmp-server enable traps ike policy add
+snmp-server enable traps ike policy delete
+snmp-server enable traps ike tunnel start
+snmp-server enable traps ike tunnel stop
+snmp-server enable traps ipsec cryptomap add
+snmp-server enable traps ipsec cryptomap delete
+snmp-server enable traps ipsec cryptomap attach
+snmp-server enable traps ipsec cryptomap detach
+snmp-server enable traps ipsec tunnel start
+snmp-server enable traps ipsec tunnel stop
+snmp-server enable traps ipsec too-many-sas
+snmp-server enable traps auth-framework sec-violation
+snmp-server enable traps rep
+snmp-server enable traps vtp
+snmp-server enable traps vlancreate
+snmp-server enable traps vlandelete
+snmp-server enable traps port-security
+snmp-server enable traps license
+snmp-server enable traps smart-license
+snmp-server enable traps cpu threshold
+snmp-server enable traps memory bufferpeak
+snmp-server enable traps stackwise
+snmp-server enable traps udld link-fail-rpt
+snmp-server enable traps udld status-change
+snmp-server enable traps fru-ctrl
+snmp-server enable traps flash insertion removal lowspace
+snmp-server enable traps energywise
+snmp-server enable traps power-ethernet group 1
+snmp-server enable traps power-ethernet police
+snmp-server enable traps entity
+snmp-server enable traps envmon
+snmp-server enable traps event-manager
+snmp-server enable traps bfd
+snmp-server enable traps dhcp
+snmp-server enable traps ospfv3 state-change
+snmp-server enable traps ospfv3 errors
+snmp-server enable traps ipmulticast
+snmp-server enable traps pimstdmib neighbor-loss invalid-register invalid-join-prune rp-mapping-change interface-election
+snmp-server enable traps msdp
+snmp-server enable traps pim neighbor-change rp-mapping-change invalid-pim-message
+snmp-server enable traps cef resource-failure peer-state-change peer-fib-state-change inconsistency
+snmp-server enable traps config-copy
+snmp-server enable traps config
+snmp-server enable traps config-ctid
+snmp-server enable traps bridge newroot topologychange
+snmp-server enable traps stpx inconsistency root-inconsistency loop-inconsistency
+snmp-server enable traps syslog
+snmp-server enable traps ipsla
+snmp-server enable traps nhrp nhs
+snmp-server enable traps nhrp nhc
+snmp-server enable traps nhrp nhp
+snmp-server enable traps nhrp quota-exceeded
+snmp-server enable traps lisp
+snmp-server enable traps entity-diag boot-up-fail hm-test-recover hm-thresh-reached scheduled-test-fail
+snmp-server enable traps local-auth
+snmp-server enable traps bgp cbgp2
+snmp-server enable traps hsrp
+snmp-server enable traps isis
+snmp-server enable traps vlan-membership
+snmp-server enable traps errdisable
+snmp-server enable traps vrfmib vrf-up vrf-down vnet-trunk-up vnet-trunk-down
+snmp-server enable traps transceiver all
+snmp-server enable traps rf
+snmp-server enable traps bulkstat collection transfer
+snmp-server enable traps mac-notification change move threshold
+snmp-server host 10.21.6.56 version 2c Snmp#V1ST4! 
+snmp-server host 10.70.70.55 version 2c Snmp#V1ST4! 
+tacacs server ISE
+ address ipv4 10.20.6.245
+ key 7 113F481623463F58072B283763
+!
+!
+!
+!
+!
+control-plane
+ service-policy input system-cpp-policy
+!
+banner exec ^CC
+
+
+
+
+ ##### VISTA OIL ##############################################################
+ #                                                                            #
+ #       Equipo      : VLO-SW-U-04                                            #
+ #  ========================================================================  #
+ #       Edificio    : Al Rio                                                 #
+ #       Direccion   : Libertador 101                                         #
+ #       Localidad   : Vicente Lopez                                          #
+ #       Provincia   : Buenos Aires                                           #
+ #       Piso        : 12                                                     #
+ #       Rack        "  2                                                     #
+ #                                                                            #
+ ############################################################ NETWORKING ######
+
+
+
+^C
+banner login ^C
+#####################################################
+#    Usted esta ingresando a un equipo privado      #
+#   si no esta autorizado puede ser legalmente      #
+#    Penalizado, desconectese inmediatamente        #
+#####################################################
+#
+#####################################################
+#       You are access in private device            #
+#    if you are not authorized it can be legally    #
+#      penalized, Disconnect immediately            #
+#####################################################
+#^C
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ session-timeout 3 
+ privilege level 10
+ logging synchronous
+ transport preferred none
+ transport input ssh
+ transport output ssh
+line vty 5 15
+ session-timeout 3 
+ privilege level 10
+ logging synchronous
+ transport preferred none
+ transport input ssh
+ transport output ssh
+!
+ntp source Vlan255
+ntp server 10.21.6.2
+!
+!
+!
+!
+!
+!
+end

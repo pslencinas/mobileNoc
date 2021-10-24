@@ -1,0 +1,16 @@
+[2021-10-23 19:44:05,942] [DEBUG] [__main__]  Connected 
+[2021-10-23 19:44:46,623] [DEBUG] [__main__]  Vlan created on DB: {'vlan_id': '9', 'vlan_name': 'NATIVE', 'vlan_description': 'NATIVE'}
+[2021-10-23 19:44:46,642] [DEBUG] [__main__]  Vlan created on DB: {'vlan_id': '10', 'vlan_name': 'LAN', 'vlan_description': 'LAN'}
+[2021-10-23 19:44:46,659] [DEBUG] [__main__]  Vlan created on DB: {'vlan_id': '11', 'vlan_name': 'Wireless', 'vlan_description': 'Wireless'}
+[2021-10-23 19:44:46,678] [DEBUG] [__main__]  Vlan created on DB: {'vlan_id': '12', 'vlan_name': 'Telefonia', 'vlan_description': 'Telefonia'}
+[2021-10-23 19:44:46,698] [DEBUG] [__main__]  Vlan created on DB: {'vlan_id': '13', 'vlan_name': 'Servidores', 'vlan_description': 'Servidores'}
+[2021-10-23 19:44:46,714] [DEBUG] [__main__]  Vlan created on DB: {'vlan_id': '14', 'vlan_name': 'Camaras', 'vlan_description': 'Camaras'}
+[2021-10-23 19:44:46,731] [DEBUG] [__main__]  Vlan created on DB: {'vlan_id': '15', 'vlan_name': 'Impresoras', 'vlan_description': 'Impresoras'}
+[2021-10-23 19:44:46,748] [DEBUG] [__main__]  Vlan created on DB: {'vlan_id': '16', 'vlan_name': 'VideoConference', 'vlan_description': 'VideoConference'}
+[2021-10-23 19:44:46,763] [DEBUG] [__main__]  Vlan created on DB: {'vlan_id': '20', 'vlan_name': 'MANAGEMENT', 'vlan_description': 'MANAGEMENT'}
+[2021-10-23 19:44:46,780] [DEBUG] [__main__]  Vlan created on DB: {'vlan_id': '255', 'vlan_name': 'Administracion', 'vlan_description': 'Administracion'}
+[2021-10-23 19:44:46,795] [DEBUG] [__main__]  Vlan created on DB: {'vlan_id': '666', 'vlan_name': 'DMZ', 'vlan_description': 'DMZ'}
+[2021-10-23 19:48:26,567] [DEBUG] [__main__]  Connected 
+[2021-10-23 19:48:39,529] [DEBUG] [__main__]  Vlan created on DB: {'vlan_id': '60', 'vlan_name': 'TEST', 'vlan_description': 'TEST'}
+[2021-10-23 19:48:51,458] [DEBUG] [__main__]  Vlan removed on DB: {'vlan_id': '60'}
+[2021-10-23 19:48:54,351] [DEBUG] [__main__]  Vlan deleted on device: {'vlan_id': '60'}
